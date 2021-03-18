@@ -15,7 +15,7 @@ export class RegisterComponent implements OnInit {
   public status: String;
 
   constructor(
-    public _userService: UserService
+    private _userService: UserService
   ) {
     this.page_title = 'Registrate';
     this.user = new User(1, '', '', 'ROLE_USER', '', '', '', '');
