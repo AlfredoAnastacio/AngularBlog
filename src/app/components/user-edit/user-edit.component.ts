@@ -24,17 +24,28 @@ export class UserEditComponent implements OnInit {
     this.user = new User(1, '', '', 'ROLE_USER', '', '', '', '');
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
-    this.user = this.identity;
+
+
+    this.user = new User(
+      this.identity.sub,
+      this.identity.name,
+      this.identity.surname,
+      this.identity.role,
+      this.identity.email, '',
+      this.identity.description,
+      this.identity.image
+      );
   }
 
   ngOnInit(): void {
   }
 
   onSubmit(form){
-    this._userService.register(this.user).subscribe(
+    this._userService.update(this.token, this.user).subscribe(
       response => {
-        if (response.status == "success") {
-          this.status = response.status;
+        console.log(response);
+        if (response['status'] == "success") {
+          this.status = response['status'];
           form.reset();
         } else {
           this.status = 'error';
