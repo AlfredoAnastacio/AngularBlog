@@ -16,6 +16,7 @@ export class UserEditComponent implements OnInit {
   public status: String;
   public token;
   public identity;
+  // public response;
 
   constructor(
     private _userService: UserService
@@ -43,10 +44,28 @@ export class UserEditComponent implements OnInit {
   onSubmit(form){
     this._userService.update(this.token, this.user).subscribe(
       response => {
-        console.log(response);
-        if (response['status'] == "success") {
-          this.status = response['status'];
-          form.reset();
+        // console.log(response['changes']['name']);
+        if (response) {
+          this.status = 'success';
+
+          //Actualizar usuario en sesión
+          if (response['changes']['name']) {
+            this.user.name = response['changes']['name'];
+          }
+          if (response['changes']['surname']) {
+            this.user.surname = response['changes']['surname'];
+          }
+          if (response['changes']['email']) {
+            this.user.email = response['changes']['email'];
+          }
+          if (response['changes']['description']) {
+            this.user.description = response['changes']['description'];
+          }
+          if (response['changes']['image']) {
+            this.user.image = response['changes']['image'];
+          }
+          this.identity = this.user;
+          localStorage.setItem('identity', JSON.stringify(this.identity));
         } else {
           this.status = 'error';
         }
